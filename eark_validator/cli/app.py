@@ -34,6 +34,7 @@ import sys
 sys.path.append('../../')
 
 import eark_validator.structure as STRUCT
+import eark_validator.mets as METS
 
 __version__ = '0.1.0'
 
@@ -107,6 +108,18 @@ def _validate_ip(info_pack):
                                                          struct_details.status))
     for error in struct_details.errors:
         pprint(error.to_json())
+
+    # mets_path = os.path.join(to_validate, "METS.xml")
+    mets_validator = METS.MetsValidator(to_validate)
+    # mets_details = mets_validator.validate_mets(mets_path)
+    mets_details = mets_validator.validate_mets("METS.xml")
+
+
+    pprint('Path {}, mets result is: {}'.format(to_validate,
+                                                         mets_details))    
+    for error in mets_validator._validation_errors:
+        pprint(error.msg)
+
 
     return ret_stat, struct_details
 
